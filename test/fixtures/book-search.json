@@ -1,0 +1,24 @@
+[
+  {
+    "isbn10": "0765302306",
+    "isbn13": "9780765302304",
+    "workId": 17473680,
+    "title": "The Gathering Storm",
+    "subtitle": "Book Twelve of the Wheel of Time",
+    "authors": [
+      {
+        "slug": "robert-jordan",
+        "name": "Robert Jordan"
+      },
+      {
+        "slug": "brandon-sanderson",
+        "name": "Brandon Sanderson"
+      }
+    ],
+    "publishDate": "2009-01-01T00:00:00+00:00",
+    "physicalFormat": "Hardcover",
+    "covers": [
+      "https://covers.isbnlab.com/9780765302304.jpg"
+    ]
+  }
+]

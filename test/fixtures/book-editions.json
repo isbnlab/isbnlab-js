@@ -1,0 +1,46 @@
+{
+  "isbn13": "9780765302304",
+  "otherEditions": [
+    {
+      "isbn10": "0765324164",
+      "isbn13": "9780765324160",
+      "title": "The Gathering Storm",
+      "slug": "the-gathering-storm",
+      "published": "2009",
+      "physicalFormat": "Leather Bound",
+      "pages": 784,
+      "imprint": null
+    },
+    {
+      "isbn10": "0792766628",
+      "isbn13": "9780792766629",
+      "title": "The Gathering Storm",
+      "slug": "the-gathering-storm",
+      "published": "2009",
+      "physicalFormat": "MP3 CD",
+      "pages": null,
+      "imprint": null
+    },
+    {
+      "isbn10": "1841491659",
+      "isbn13": "9781841491653",
+      "title": "The Gathering Storm",
+      "slug": "the-gathering-storm",
+      "published": "2009",
+      "physicalFormat": "Hardcover",
+      "pages": null,
+      "imprint": null
+    }
+  ],
+  "previousEdition": null,
+  "nextEdition": {
+    "isbn10": "0765324164",
+    "isbn13": "9780765324160",
+    "title": "The Gathering Storm",
+    "slug": "the-gathering-storm",
+    "published": "2009",
+    "physicalFormat": "Leather Bound",
+    "pages": 784,
+    "imprint": null
+  }
+}

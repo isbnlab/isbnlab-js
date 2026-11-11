@@ -1,0 +1,152 @@
+{
+  "id": 15596406,
+  "isbn10": "0765302306",
+  "isbn13": "9780765302304",
+  "workId": 17473680,
+  "title": "The Gathering Storm",
+  "subtitle": "Book Twelve of the Wheel of Time",
+  "numberOfPages": 784,
+  "description": "Tarmon Gai’don, the Last Battle, looms. And mankind is not ready. …",
+  "publishers": [
+    {
+      "slug": "tor-forge",
+      "name": "Tor/Forge"
+    }
+  ],
+  "imprint": [
+    {
+      "slug": "tor-books",
+      "name": "Tor Books"
+    }
+  ],
+  "publishDate": "2009-01-01T00:00:00+00:00",
+  "physicalFormat": "Hardcover",
+  "covers": [
+    "https://covers.isbnlab.com/9780765302304.jpg"
+  ],
+  "authors": [
+    {
+      "slug": "robert-jordan",
+      "name": "Robert Jordan"
+    },
+    {
+      "slug": "brandon-sanderson",
+      "name": "Brandon Sanderson"
+    }
+  ],
+  "contributors": null,
+  "subjects": [
+    {
+      "slug": "fiction",
+      "name": "Fiction"
+    }
+  ],
+  "series": {
+    "identifier": "907828dc612b70769ff891cca208c863",
+    "slug": "wheel-of-time",
+    "name": "Wheel of time",
+    "number": 12,
+    "parent": null,
+    "otherSeries": [],
+    "previousBook": {
+      "isbn10": "0312873077",
+      "isbn13": "9780312873073",
+      "title": "Knife of Dreams",
+      "slug": "knife-of-dreams",
+      "number": 11
+    },
+    "nextBook": {
+      "isbn10": "035650395X",
+      "isbn13": "9780356503950",
+      "title": "Memory of Light",
+      "slug": "memory-of-light",
+      "number": 14
+    }
+  },
+  "genres": [
+    {
+      "slug": "FIC009020",
+      "name": "FICTION / Fantasy / Epic"
+    },
+    {
+      "slug": "FIC009100",
+      "name": "FICTION / Fantasy / Action & Adventure"
+    }
+  ],
+  "otherEditions": [
+    {
+      "isbn10": "0765324164",
+      "isbn13": "9780765324160",
+      "title": "The Gathering Storm",
+      "slug": "the-gathering-storm",
+      "published": "2009",
+      "physicalFormat": "Leather Bound",
+      "pages": 784,
+      "imprint": null
+    },
+    {
+      "isbn10": "0792766628",
+      "isbn13": "9780792766629",
+      "title": "The Gathering Storm",
+      "slug": "the-gathering-storm",
+      "published": "2009",
+      "physicalFormat": "MP3 CD",
+      "pages": null,
+      "imprint": null
+    }
+  ],
+  "previousEdition": null,
+  "nextEdition": {
+    "isbn10": "0765324164",
+    "isbn13": "9780765324160",
+    "title": "The Gathering Storm",
+    "slug": "the-gathering-storm",
+    "published": "2009",
+    "physicalFormat": "Leather Bound",
+    "pages": 784,
+    "imprint": null
+  },
+  "physicalDimensions": null,
+  "ratings": {
+    "summary": {
+      "average": 4.5,
+      "count": 16,
+      "sum": 0
+    },
+    "counts": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    }
+  },
+  "language": "English",
+  "saleStatus": null,
+  "excerpt": null,
+  "reviewQuotes": null,
+  "retailLinks": null,
+  "categories": null,
+  "aiSummary": null,
+  "canonicalEditionId": 15595955,
+  "languageCode": "en",
+  "publishDatePrecision": "year",
+  "estimatedReadTime": 1176,
+  "languagesCount": 3,
+  "link": "https://www.isbnlab.com/book/9780765302304/the-gathering-storm",
+  "isbnModel": {
+    "isbn10": "0765302306",
+    "isbn10Formatted": "0-7653-0230-6",
+    "isbn13": "9780765302304",
+    "isbn13Formatted": "978-0-7653-0230-4",
+    "ean": "9780765302304",
+    "asin": "0765302306",
+    "prefix": "978",
+    "registrationGroup": "0",
+    "registrationGroupName": "English language",
+    "groupIdentifier": "978-0",
+    "registrant": "7653",
+    "publication": "0230",
+    "checkDigit": "4"
+  }
+}

@@ -1,0 +1,15 @@
+# Hand-maintained; the generator must not overwrite these.
+README.md
+LICENSE
+package.json
+package-lock.json
+tsconfig.json
+tsconfig.*.json
+tsup.config.ts
+vitest.config.mts
+.gitignore
+.npmignore
+.github/**
+test/**
+tests/**
+git_push.sh

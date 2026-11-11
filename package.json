@@ -1,0 +1,65 @@
+{
+  "name": "isbnlab",
+  "version": "0.1.0",
+  "description": "Official TypeScript and JavaScript client for the ISBNLab book metadata API: books by ISBN, authors, publishers, BISAC genres, covers and ISBN conversion.",
+  "keywords": [
+    "isbn",
+    "isbn-10",
+    "isbn-13",
+    "isbn-lookup",
+    "book-metadata",
+    "books-api",
+    "bisac",
+    "asin",
+    "api-client",
+    "typescript",
+    "isbnlab"
+  ],
+  "homepage": "https://www.isbnlab.com/api-information",
+  "bugs": "https://github.com/isbnlab/isbnlab-js/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isbnlab/isbnlab-js.git"
+  },
+  "license": "MIT",
+  "author": "ISBNLab <hello@isbnlab.com> (https://www.isbnlab.com)",
+  "type": "commonjs",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:dist": "node test/dist-smoke.cjs && node test/dist-smoke.mjs",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build && npm run test:dist"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.8"
+  }
+}
