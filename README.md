@@ -28,9 +28,7 @@ console.log(book.title);                       // The Gathering Storm
 console.log(book.authors?.[0]?.name);          // Robert Jordan
 console.log(book.publishDate?.getUTCFullYear());
 
-for (const edition of book.otherEditions ?? []) {
-  console.log(edition.isbn13, edition.title);
-}
+console.log(book.otherEditionsCount, 'other editions');
 ```
 
 Many fields are empty for some books, so every field is optional and may be `null`.
@@ -45,6 +43,34 @@ if (authorId != null) {
   const author = await new AuthorsApi(config).getAuthor(String(authorId));
   console.log(author.bio);
 }
+```
+
+## Fields that depend on your plan
+
+A book lookup lists the other editions (`otherEditions`, `previousEdition`, `nextEdition`) on the Pro plan. On the Free and Standard plans those fields are empty, `otherEditionsCount` still gives the number of other editions, and two response headers name what was left out: `X-Plan-Restricted-Fields` lists the fields and `X-Plan-Upgrade` links to the plans. `restrictedFields()` and `upgradeUrl()` read them from a `...Raw()` call:
+
+```ts
+import { restrictedFields, upgradeUrl } from 'isbnlab';
+
+const response = await books.getBookByIsbnRaw({ isbn: '9780765302304' });
+const full = await response.value();
+
+if (restrictedFields(response).includes('otherEditions')) {
+  console.log(full.otherEditionsCount, 'other editions; see', upgradeUrl(response));
+} else {
+  for (const edition of full.otherEditions ?? []) {
+    console.log(edition.isbn13, edition.title);
+  }
+}
+```
+
+`restrictedFields(response)` returns every field that was left out, for example `['otherEditions', 'previousEdition', 'nextEdition']`, or `[]` when the response is complete. It also accepts a fetch `Response` or `Headers`.
+
+A cover lookup (Standard or Pro) gives each cover image's URL in `covers`, and in `sizes` the same image 200, 400 and 800 pixels wide (`w200`, `w400`, `w800`); a width is empty when that size is not available.
+
+```ts
+const cover = await books.getBookCoverByIsbn('9780765302304');
+console.log(cover.sizes?.[0]?.w400); // https://covers.isbnlab.com/w400/9780765302304.jpg
 ```
 
 ## Errors

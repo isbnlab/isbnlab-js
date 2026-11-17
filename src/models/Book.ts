@@ -305,6 +305,12 @@ export interface Book {
      * @memberof Book
      */
     isbnModel?: IsbnDetails | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof Book
+     */
+    readonly otherEditionsCount?: number | null;
 }
 
 
@@ -374,6 +380,7 @@ export function BookFromJSONTyped(json: any, ignoreDiscriminator: boolean): Book
         'languagesCount': json['languagesCount'] == null ? undefined : json['languagesCount'],
         'link': json['link'] == null ? undefined : json['link'],
         'isbnModel': json['isbnModel'] == null ? undefined : IsbnDetailsFromJSON(json['isbnModel']),
+        'otherEditionsCount': json['otherEditionsCount'] == null ? undefined : json['otherEditionsCount'],
     };
 }
 
@@ -381,7 +388,7 @@ export function BookToJSON(json: any): Book {
     return BookToJSONTyped(json, false);
 }
 
-export function BookToJSONTyped(value?: Omit<Book, 'id'> | null, ignoreDiscriminator: boolean = false): any {
+export function BookToJSONTyped(value?: Omit<Book, 'id'|'otherEditionsCount'> | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }

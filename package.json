@@ -1,6 +1,6 @@
 {
   "name": "isbnlab",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Official TypeScript and JavaScript client for the ISBNLab book metadata API: books by ISBN, authors, publishers, BISAC genres, covers and ISBN conversion.",
   "keywords": [
     "isbn",

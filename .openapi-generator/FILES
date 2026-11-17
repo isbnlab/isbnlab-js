@@ -13,6 +13,7 @@ src/models/BookCover.ts
 src/models/BookEditions.ts
 src/models/Category.ts
 src/models/Contributor.ts
+src/models/CoverSize.ts
 src/models/EditionRef.ts
 src/models/EntityRef.ts
 src/models/Genre.ts
@@ -29,4 +30,5 @@ src/models/SeriesParent.ts
 src/models/Subject.ts
 src/models/SubjectRef.ts
 src/models/index.ts
+src/plan.ts
 src/runtime.ts

@@ -10,6 +10,8 @@ import {
   PublishersApi,
   ResponseError,
   SubjectsApi,
+  restrictedFields,
+  upgradeUrl,
 } from '../src';
 
 /**
@@ -24,13 +26,13 @@ function fixture(name: string): string {
   return readFileSync(join(__dirname, 'fixtures', name), 'utf8');
 }
 
-function mock(body: string, status = 200, contentType = 'application/json') {
+function mock(body: string, status = 200, contentType = 'application/json', headers: Record<string, string> = {}) {
   const calls: Call[] = [];
   const config = new Configuration({
     accessToken: 'test-token',
     fetchApi: async (input, init) => {
       calls.push({ url: new URL(String(input)), init: init ?? {} });
-      return new Response(body, { status, headers: { 'Content-Type': contentType } });
+      return new Response(body, { status, headers: { 'Content-Type': contentType, ...headers } });
     },
   });
 
@@ -106,6 +108,14 @@ describe('BooksApi', () => {
     const cover = await new BooksApi(covers.config).getBookCoverByIsbn('9780765302304');
     expectRequest(covers.calls[0], '/api/book/cover/isbn/9780765302304');
     expect(cover.covers?.[0]).toMatch(/^https:\/\//);
+    expect(cover.sizes?.map((size) => size.url)).toEqual(cover.covers);
+    expect(cover.sizes?.[0]?.w200).toBe('https://covers.isbnlab.com/w200/9780765302304.jpg');
+    expect(cover.sizes?.[1]?.w800).toBe('https://covers.isbnlab.com/w800/9780765302304-01.jpg');
+
+    const elsewhere = mock(fixture('book-cover-elsewhere.json'));
+    const other = await new BooksApi(elsewhere.config).getBookCoverByIsbn('9780765302304');
+    // A null from the API arrives as undefined, like every empty field in this client.
+    expect(other.sizes?.[1]).toEqual({ url: 'https://example.com/elsewhere.jpg', w200: undefined, w400: undefined, w800: undefined });
 
     const editions = mock(fixture('book-editions.json'));
     const result = await new BooksApi(editions.config).getEditionsByIsbn('9780765302304');
@@ -187,5 +197,41 @@ describe('errors', () => {
     await new BooksApi(config).getBookByIsbn('9780765302304');
     expect(calls[0]?.url.searchParams.get('access_token')).toBe('ilq_example');
     expect((calls[0]?.init.headers as Record<string, string>).Authorization).toBeUndefined();
+  });
+});
+
+describe('fields that depend on the plan', () => {
+  it('sends the edition count with every book', async () => {
+    const { config } = mock(fixture('book.json'));
+    const book = await new BooksApi(config).getBookByIsbn('9780765302304');
+
+    expect(book.otherEditionsCount).toBe(book.otherEditions?.length);
+  });
+
+  it('names the fields a plan left out, from the response headers', async () => {
+    // Lowercase, as they arrive over HTTP/2.
+    const { config } = mock(fixture('book-free.json'), 200, 'application/json', {
+      'x-plan-restricted-fields': 'otherEditions, previousEdition, nextEdition',
+      'x-plan-upgrade': 'https://www.isbnlab.com/pricing',
+    });
+    const response = await new BooksApi(config).getBookByIsbnRaw({ isbn: '9780765302304' });
+    const book = await response.value();
+
+    expect(book.otherEditions).toBeUndefined();
+    expect(book.previousEdition).toBeUndefined();
+    expect(book.nextEdition).toBeUndefined();
+    expect(book.otherEditionsCount).toBe(2);
+    expect(restrictedFields(response)).toEqual(['otherEditions', 'previousEdition', 'nextEdition']);
+    expect(restrictedFields(response.raw)).toEqual(['otherEditions', 'previousEdition', 'nextEdition']);
+    expect(restrictedFields(response.raw.headers)).toEqual(['otherEditions', 'previousEdition', 'nextEdition']);
+    expect(upgradeUrl(response)).toBe('https://www.isbnlab.com/pricing');
+  });
+
+  it('names no fields when nothing was left out', async () => {
+    const { config } = mock(fixture('book.json'));
+    const response = await new BooksApi(config).getBookByIsbnRaw({ isbn: '9780765302304' });
+
+    expect(restrictedFields(response)).toEqual([]);
+    expect(upgradeUrl(response)).toBeNull();
   });
 });

@@ -1,0 +1,21 @@
+{
+  "isbn13": "9780765302304",
+  "covers": [
+    "https://covers.isbnlab.com/9780765302304.jpg",
+    "https://example.com/elsewhere.jpg"
+  ],
+  "sizes": [
+    {
+      "url": "https://covers.isbnlab.com/9780765302304.jpg",
+      "w200": "https://covers.isbnlab.com/w200/9780765302304.jpg",
+      "w400": "https://covers.isbnlab.com/w400/9780765302304.jpg",
+      "w800": "https://covers.isbnlab.com/w800/9780765302304.jpg"
+    },
+    {
+      "url": "https://example.com/elsewhere.jpg",
+      "w200": null,
+      "w400": null,
+      "w800": null
+    }
+  ]
+}

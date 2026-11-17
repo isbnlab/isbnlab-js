@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { CoverSize } from './CoverSize';
+import {
+    CoverSizeFromJSON,
+    CoverSizeFromJSONTyped,
+    CoverSizeToJSON,
+    CoverSizeToJSONTyped,
+} from './CoverSize';
+
 /**
  * 
  * @export
@@ -31,6 +39,12 @@ export interface BookCover {
      * @memberof BookCover
      */
     covers?: Array<string> | null;
+    /**
+     * 
+     * @type {Array<CoverSize>}
+     * @memberof BookCover
+     */
+    sizes?: Array<CoverSize> | null;
 }
 
 /**
@@ -52,6 +66,7 @@ export function BookCoverFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         
         'isbn13': json['isbn13'] == null ? undefined : json['isbn13'],
         'covers': json['covers'] == null ? undefined : json['covers'],
+        'sizes': json['sizes'] == null ? undefined : ((json['sizes'] as Array<any>).map(CoverSizeFromJSON)),
     };
 }
 
@@ -68,6 +83,7 @@ export function BookCoverToJSONTyped(value?: BookCover | null, ignoreDiscriminat
         
         'isbn13': value['isbn13'],
         'covers': value['covers'],
+        'sizes': value['sizes'] == null ? undefined : ((value['sizes'] as Array<any>).map(CoverSizeToJSON)),
     };
 }
 

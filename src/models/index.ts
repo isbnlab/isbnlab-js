@@ -7,6 +7,7 @@ export * from './BookCover';
 export * from './BookEditions';
 export * from './Category';
 export * from './Contributor';
+export * from './CoverSize';
 export * from './EditionRef';
 export * from './EntityRef';
 export * from './Genre';
