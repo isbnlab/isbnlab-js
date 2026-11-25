@@ -9,6 +9,7 @@ src/index.ts
 src/models/Author.ts
 src/models/AuthorPhoto.ts
 src/models/Book.ts
+src/models/BookBatchRequest.ts
 src/models/BookCover.ts
 src/models/BookEditions.ts
 src/models/Category.ts

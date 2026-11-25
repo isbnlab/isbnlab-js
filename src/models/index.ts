@@ -3,6 +3,7 @@
 export * from './Author';
 export * from './AuthorPhoto';
 export * from './Book';
+export * from './BookBatchRequest';
 export * from './BookCover';
 export * from './BookEditions';
 export * from './Category';

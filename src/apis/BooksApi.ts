@@ -16,12 +16,15 @@
 import * as runtime from '../runtime';
 import type {
   Book,
+  BookBatchRequest,
   BookCover,
   BookEditions,
 } from '../models/index';
 import {
     BookFromJSON,
     BookToJSON,
+    BookBatchRequestFromJSON,
+    BookBatchRequestToJSON,
     BookCoverFromJSON,
     BookCoverToJSON,
     BookEditionsFromJSON,
@@ -46,6 +49,10 @@ export interface GetBookCoverByAsinRequest {
 
 export interface GetBookCoverByIsbnRequest {
     isbn: string;
+}
+
+export interface GetBooksByIsbnsRequest {
+    bookBatchRequest: BookBatchRequest;
 }
 
 export interface GetEditionsByAsinRequest {
@@ -310,6 +317,53 @@ export class BooksApi extends runtime.BaseAPI {
      */
     async getBookCoverByIsbn(isbn: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BookCover> {
         const response = await this.getBookCoverByIsbnRaw({ isbn: isbn }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Look up several books at once by ISBN-10 or ISBN-13 (Standard and above). Each ISBN counts as one call.
+     */
+    async getBooksByIsbnsRaw(requestParameters: GetBooksByIsbnsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Book>>> {
+        if (requestParameters['bookBatchRequest'] == null) {
+            throw new runtime.RequiredError(
+                'bookBatchRequest',
+                'Required parameter "bookBatchRequest" was null or undefined when calling getBooksByIsbns().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Token", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/batch/book`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: BookBatchRequestToJSON(requestParameters['bookBatchRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(BookFromJSON));
+    }
+
+    /**
+     * Look up several books at once by ISBN-10 or ISBN-13 (Standard and above). Each ISBN counts as one call.
+     */
+    async getBooksByIsbns(bookBatchRequest: BookBatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Book>> {
+        const response = await this.getBooksByIsbnsRaw({ bookBatchRequest: bookBatchRequest }, initOverrides);
         return await response.value();
     }
 

@@ -53,3 +53,13 @@ new Configuration({ apiKey: 'ilq_...' });
 const response = await books.getBookByIsbnRaw({ isbn: '9780765302304' });
 console.log(response.raw.headers.get('X-RateLimit-Remaining'));
 await response.value();
+
+{
+  const found = await books.getBooksByIsbns({
+    isbns: ['9780765302304', '0-7653-1756-7'],
+  });
+
+  for (const book of found) {
+    console.log(book.isbn13, book.title);
+  }
+}

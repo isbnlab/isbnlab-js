@@ -39,11 +39,11 @@ function mock(body: string, status = 200, contentType = 'application/json', head
   return { config, calls };
 }
 
-function expectRequest(call: Call | undefined, path: string, query?: string): void {
+function expectRequest(call: Call | undefined, path: string, query?: string, method = 'GET'): void {
   expect(call).toBeDefined();
   const { url, init } = call!;
   const headers = init.headers as Record<string, string>;
-  expect(init.method).toBe('GET');
+  expect(init.method).toBe(method);
   expect(url.origin).toBe('https://www.isbnlab.com');
   expect(url.pathname).toBe(path);
   if (query !== undefined) {
@@ -81,6 +81,33 @@ describe('BooksApi', () => {
     expect(book.otherEditions?.length).toBeGreaterThan(0);
     expect(book.otherEditions?.[0]?.isbn13).toMatch(/^97[89]\d{10}$/);
     expect(book.isbnModel?.isbn13).toBe('9780765302304');
+  });
+
+  it('gets several books by ISBN in one request', async () => {
+    const { config, calls } = mock(fixture('books-batch.json'));
+    const books = await new BooksApi(config).getBooksByIsbns({
+      isbns: ['9780765302304', '978-0-00-000000-2', '9781234567897'],
+    });
+
+    expectRequest(calls[0], '/api/batch/book', undefined, 'POST');
+    expect((calls[0]!.init.headers as Record<string, string>)['Content-Type']).toBe('application/json');
+    expect(JSON.parse(String(calls[0]!.init.body))).toEqual({
+      isbns: ['9780765302304', '978-0-00-000000-2', '9781234567897'],
+    });
+    // Misses are left out, so match by ISBN, not by position.
+    expect(books.map((b) => b.isbn13)).toEqual(['9780765302304', '9780000000002']);
+    expect(books[0]?.publishDate).toBeInstanceOf(Date);
+    expect(books[0]?.otherEditions).toBeUndefined();
+    expect(books[0]?.otherEditionsCount).toBe(2);
+  });
+
+  it('sends include, and leaves the batch size to the server', async () => {
+    const { config, calls } = mock('[]');
+    const isbns = Array.from({ length: 1000 }, () => '9780765302304');
+    const books = await new BooksApi(config).getBooksByIsbns({ isbns, include: ['otherEditions'] });
+
+    expect(books).toEqual([]);
+    expect(JSON.parse(String(calls[0]!.init.body))).toEqual({ isbns, include: ['otherEditions'] });
   });
 
   it('loads a book with most fields empty', async () => {

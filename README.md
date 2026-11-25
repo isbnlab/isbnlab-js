@@ -45,6 +45,24 @@ if (authorId != null) {
 }
 ```
 
+## Several books at once
+
+`getBooksByIsbns()` looks up several ISBN-10s or ISBN-13s in one request: up to 25 on Standard, 100 on Pro and 500 on Business. Each ISBN counts as one call toward your daily limit.
+
+```ts
+const found = await books.getBooksByIsbns({
+  isbns: ['9780765302304', '0-7653-1756-7'],
+});
+
+for (const book of found) {
+  console.log(book.isbn13, book.title);
+}
+```
+
+The books come back in the order asked, once each, and an ISBN the catalog lacks is left out, so match results by ISBN rather than by position. One invalid ISBN, or more ISBNs than your plan allows, refuses the whole request with a 400; the Free plan gets a 403.
+
+`otherEditions` is empty in a batch unless the request includes it (`include: ['otherEditions']`), which needs Pro or above; `otherEditionsCount` is always set. With it, a large batch of popular books can run to tens of megabytes.
+
 ## Fields that depend on your plan
 
 A book lookup lists the other editions (`otherEditions`, `previousEdition`, `nextEdition`) on the Pro plan. On the Free and Standard plans those fields are empty, `otherEditionsCount` still gives the number of other editions, and two response headers name what was left out: `X-Plan-Restricted-Fields` lists the fields and `X-Plan-Upgrade` links to the plans. `restrictedFields()` and `upgradeUrl()` read them from a `...Raw()` call:
@@ -108,6 +126,7 @@ Anyone can read a token that is shipped to the browser, so call the API from you
 | `BooksApi` | `getBookByIsbn(isbn)`, `getBookByAsin(asin)`, `getBookById(id)` | Free |
 | `IsbnApi` | `parseIsbn`, `isbn10ToIsbn13`, `isbn13ToIsbn10`, `isbnToEan`, `eanToIsbn`, `isbnToAsin`, `asinToIsbn` | Free |
 | `BooksApi` | `getBookCoverByIsbn(isbn)`, `getBookCoverByAsin(asin)` | Standard |
+| `BooksApi` | `getBooksByIsbns(request)`: up to 25 ISBNs on Standard, 100 on Pro, 500 on Business | Standard |
 | `AuthorsApi` | `getAuthor(id)`, `findAuthor(name)` | Standard |
 | `PublishersApi` | `getPublisher(id)`, `findPublisher(name)`, `getPublishersByPrefix(prefix)` | Standard |
 | `SubjectsApi` | `getSubject(id)`, `findSubject(name)` | Standard |
